@@ -14,6 +14,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView mScoreTextView;
     private TextView mQuestionTextView;
 
+    private String mQuestionString;
+    private String mRightAnswerString;
+    private int mRightAnswerPositionInt;
+    private boolean mIsPositiveBoolean;
+    private int mMinInt;
+    private int mMaxInt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,5 +33,11 @@ public class MainActivity extends AppCompatActivity {
         mTimerTextView = findViewById(R.id.timer_text_view);
         mScoreTextView = findViewById(R.id.score_text_view);
         mQuestionTextView = findViewById(R.id.question_text_view);
+    }
+
+    // генерирует вопросы
+    private void generateQuestion() {
+        int a = (int) (Math.random() * (mMaxInt - mMinInt + 1) + mMinInt);
+        int b = (int) (Math.random() * (mMaxInt - mMinInt + 1) + mMinInt);
     }
 }
