@@ -19,16 +19,21 @@ public class MainActivity extends AppCompatActivity {
 
         mTimerTextView = findViewById(R.id.timer_text_view);
 
-        CountDownTimer timer = new CountDownTimer(60000, 1000) {
+        CountDownTimer timer = new CountDownTimer(6000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
                 mTimerTextView.setText(Integer.toString(seconds));
             }
 
+            /*
+                метод вызывается при завершении отчета
+             */
             @Override
             public void onFinish() {
-
+                Toast.makeText(getApplicationContext(), "Таймер завершен",
+                        Toast.LENGTH_SHORT).show();
+                mTimerTextView.setText(Integer.toString(0));
             }
         };
 
