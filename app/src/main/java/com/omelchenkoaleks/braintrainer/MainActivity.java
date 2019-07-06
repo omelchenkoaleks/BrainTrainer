@@ -1,42 +1,30 @@
 package com.omelchenkoaleks.braintrainer;
 
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
-import android.widget.TextView;
-import android.widget.Toast;
-
 public class MainActivity extends AppCompatActivity {
+    private TextView mOpinion_0_TextView;
+    private TextView mOpinion_1_TextView;
+    private TextView mOpinion_2_TextView;
+    private TextView mOpinion_3_TextView;
     private TextView mTimerTextView;
+    private TextView mScoreTextView;
+    private TextView mQuestionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mOpinion_0_TextView = findViewById(R.id.opinion_0_text_view);
+        mOpinion_1_TextView = findViewById(R.id.opinion_1_text_view);
+        mOpinion_2_TextView = findViewById(R.id.opinion_2_text_view);
+        mOpinion_3_TextView = findViewById(R.id.opinion_3_text_view);
         mTimerTextView = findViewById(R.id.timer_text_view);
-
-        CountDownTimer timer = new CountDownTimer(6000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-                mTimerTextView.setText(Integer.toString(seconds));
-            }
-
-            /*
-                метод вызывается при завершении отчета
-             */
-            @Override
-            public void onFinish() {
-                Toast.makeText(getApplicationContext(), "Таймер завершен",
-                        Toast.LENGTH_SHORT).show();
-                mTimerTextView.setText(Integer.toString(0));
-            }
-        };
-
-        timer.start();
+        mScoreTextView = findViewById(R.id.score_text_view);
+        mQuestionTextView = findViewById(R.id.question_text_view);
     }
 }
