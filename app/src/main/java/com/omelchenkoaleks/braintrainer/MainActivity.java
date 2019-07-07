@@ -1,6 +1,7 @@
 package com.omelchenkoaleks.braintrainer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +16,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
 
     private String mQuestionString;
-    private String mRightAnswerString;
+    private int mRightAnswerInt;
     private int mRightAnswerPositionInt;
     private boolean mIsPositiveBoolean;
-    private int mMinInt;
-    private int mMaxInt;
+    private int mMinInt = 5;
+    private int mMaxInt = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,28 @@ public class MainActivity extends AppCompatActivity {
 
     // генерирует вопросы
     private void generateQuestion() {
+        // получаем случайные числа от 5 до 30
         int a = (int) (Math.random() * (mMaxInt - mMinInt + 1) + mMinInt);
         int b = (int) (Math.random() * (mMaxInt - mMinInt + 1) + mMinInt);
+
+        // получаем число либо 0 - либо 1
+        int mark = (int) (Math.random() * 2);
+        /*
+            переменной присвоится значение true - если сгенерируется число 1
+            и, значение false - если сгенерируется число 0
+        */
+        mIsPositiveBoolean = mark == 1;
+
+        // теперь формируем правильный ответ
+        if (mIsPositiveBoolean) {
+            mRightAnswerInt = a + b;
+            mQuestionString = String.format("%s + %s", a, b);
+        } else {
+            mRightAnswerInt = a - b;
+            mQuestionString = String.format("%s + %s", a, b);
+        }
+
+        // генерируем индекс правильного ответа
+        mRightAnswerPositionInt = (int) (Math.random() * 4);
     }
 }
