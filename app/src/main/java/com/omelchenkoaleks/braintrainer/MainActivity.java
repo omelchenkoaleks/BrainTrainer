@@ -62,4 +62,22 @@ public class MainActivity extends AppCompatActivity {
         // генерируем индекс правильного ответа
         mRightAnswerPositionInt = (int) (Math.random() * 4);
     }
+
+    /*
+            генерирует неправильные ответы и возвращает результаты,
+            используем при установке текста у TextView с вариантами ответа
+      */
+    private int generateWrongAnswer() {
+        /*
+            число от -25 до 35 (генерируем)
+            выполняем до тех пор, пока полученное число не будет
+            отличаться от правильного ответа - чтобы не произошло совпадение ...
+          */
+        int result;
+        do {
+            result = (int) (Math.random() * mMaxInt * 2 + 1) - (mMaxInt - mMinInt);
+        } while (result == mRightAnswerInt);
+        return result;
+    }
+
 }
