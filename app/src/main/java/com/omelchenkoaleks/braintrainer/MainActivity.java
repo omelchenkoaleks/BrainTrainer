@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private int mMin = 5;
     private int mMax = 30;
 
+    private int mCountOfQuestions = 0;
+    private int mCountRightAnswer = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                 mOptions.get(i).setText(Integer.toString(generateWrongAnswer()));
             }
         }
+
+        String score = String.format("%s / %s", mCountRightAnswer, mCountOfQuestions);
+        mScoreTextView.setText(score);
     }
 
     // генерирует вопросы
@@ -117,10 +123,15 @@ public class MainActivity extends AppCompatActivity {
         String answer = textView.getText().toString();
         int сhosenAnswer = Integer.parseInt(answer);
         if (сhosenAnswer == mRightAnswer) {
+            // если правильный увеличиваем количество правильных ответов
+            mCountRightAnswer++;
             Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
         }
+
+        // независимо правильный или нет ответ увеличиваем количество общих вопросов
+        mCountOfQuestions++;
 
         playNext();
     }
