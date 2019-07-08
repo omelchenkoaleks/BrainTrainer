@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mOpinion_0_TextView;
@@ -69,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
 
         String score = String.format("%s / %s", mCountRightAnswer, mCountOfQuestions);
         mScoreTextView.setText(score);
+    }
+
+    /* метод преобразует милисекунды (количество, которое остальсь
+             до конца игры) в читаемый формат (String) */
+    private String getTime(long millis) {
+        // получаем секунды и минуты
+        int seconds = (int) (millis / 1000);
+        int minutes = seconds % 60;
+
+        // теперь возвращаем строку в нужном нам формате
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
     }
 
     // генерирует вопросы
