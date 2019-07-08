@@ -1,10 +1,12 @@
 package com.omelchenkoaleks.braintrainer;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mOpinion_0_TextView;
@@ -15,12 +17,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView mScoreTextView;
     private TextView mQuestionTextView;
 
-    private String mQuestionString;
-    private int mRightAnswerInt;
-    private int mRightAnswerPositionInt;
-    private boolean mIsPositiveBoolean;
-    private int mMinInt = 5;
-    private int mMaxInt = 30;
+    /*
+        текст в TextView будет устанавливаться в цикле,
+        поэтому нужен массив
+     */
+    private ArrayList<TextView> mOptions = new ArrayList<>();
+
+    private String mQuestion;
+    private int mRightAnswer;
+    private int mRightAnswerPosition;
+    private boolean mIsPositive;
+    private int mMin = 5;
+    private int mMax = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +42,32 @@ public class MainActivity extends AppCompatActivity {
         mTimerTextView = findViewById(R.id.timer_text_view);
         mScoreTextView = findViewById(R.id.score_text_view);
         mQuestionTextView = findViewById(R.id.question_text_view);
+
+        mOptions.add(mOpinion_0_TextView);
+        mOptions.add(mOpinion_1_TextView);
+        mOptions.add(mOpinion_2_TextView);
+        mOptions.add(mOpinion_3_TextView);
+
+        playNext();
+    }
+
+    private void playNext() {
+        generateQuestion();
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (i == mRightAnswerPosition) {
+                mOptions.get(i).setText(Integer.toString(mRightAnswer));
+            } else {
+                mOptions.get(i).setText(Integer.toString(generateWrongAnswer()));
+            }
+        }
     }
 
     // генерирует вопросы
     private void generateQuestion() {
         // получаем случайные числа от 5 до 30
-        int a = (int) (Math.random() * (mMaxInt - mMinInt + 1) + mMinInt);
-        int b = (int) (Math.random() * (mMaxInt - mMinInt + 1) + mMinInt);
+        int a = (int) (Math.random() * (mMax - mMin + 1) + mMin);
+        int b = (int) (Math.random() * (mMax - mMin + 1) + mMin);
 
         // получаем число либо 0 - либо 1
         int mark = (int) (Math.random() * 2);
@@ -48,19 +75,21 @@ public class MainActivity extends AppCompatActivity {
             переменной присвоится значение true - если сгенерируется число 1
             и, значение false - если сгенерируется число 0
         */
-        mIsPositiveBoolean = mark == 1;
+        mIsPositive = mark == 1;
 
         // теперь формируем правильный ответ
-        if (mIsPositiveBoolean) {
-            mRightAnswerInt = a + b;
-            mQuestionString = String.format("%s + %s", a, b);
+        if (mIsPositive) {
+            mRightAnswer = a + b;
+            mQuestion = String.format("%s + %s", a, b);
         } else {
-            mRightAnswerInt = a - b;
-            mQuestionString = String.format("%s + %s", a, b);
+            mRightAnswer = a - b;
+            mQuestion = String.format("%s - %s", a, b);
         }
 
+        mQuestionTextView.setText(mQuestion);
+
         // генерируем индекс правильного ответа
-        mRightAnswerPositionInt = (int) (Math.random() * 4);
+        mRightAnswerPosition = (int) (Math.random() * 4);
     }
 
     /*
@@ -75,9 +104,13 @@ public class MainActivity extends AppCompatActivity {
           */
         int result;
         do {
-            result = (int) (Math.random() * mMaxInt * 2 + 1) - (mMaxInt - mMinInt);
-        } while (result == mRightAnswerInt);
+            result = (int) (Math.random() * mMax * 2 + 1) - (mMax - mMin);
+        } while (result == mRightAnswer);
         return result;
     }
 
+    // новый вопрос должен генерироваться каждый раз при выборе варианта
+    public void onClickAnswer(View view) {
+        playNext();
+    }
 }
