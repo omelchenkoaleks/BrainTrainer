@@ -1,8 +1,10 @@
 package com.omelchenkoaleks.braintrainer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,12 +71,24 @@ public class MainActivity extends AppCompatActivity {
                     и передаем в качестве параметра оставшееся количество милисекунд (millisUntilFinished)
                  */
                 mTimerTextView.setText(getTime(millisUntilFinished));
+
+
             }
 
             @Override
             public void onFinish() {
                 mTimerTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", 00, 00));
                 mGameOver = true;
+
+                /*
+                    сохраняем данные в SharedPreferences
+                 */
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                // проверяем - не сохранили ли мы уже максимальное значение ранее
+                int max = preferences.getInt("max", 0);
+                if (mCountOfRightAnswer >= max) {
+                    preferences.edit().putInt("max", mCountOfRightAnswer).apply();
+                }
 
                 // запускаем активити для вывода результата и начала новой игры
                 Intent intent = new Intent(MainActivity.this, ScoreActivity.class);
