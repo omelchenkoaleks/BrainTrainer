@@ -1,5 +1,6 @@
 package com.omelchenkoaleks.braintrainer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private int mMax = 30;
 
     private int mCountOfQuestions = 0;
-    private int mCountRightAnswer = 0;
+    private int mCountOfRightAnswer = 0;
 
     // хранит значение - закончилась ли игра
     private boolean mGameOver = false;
@@ -72,9 +73,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                // TODO: мои доработки )))
                 mTimerTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", 00, 00));
                 mGameOver = true;
+
+                // запускаем активити для вывода результата и начала новой игры
+                Intent intent = new Intent(MainActivity.this, ScoreActivity.class);
+                intent.putExtra("result", mCountOfRightAnswer);
+                startActivity(intent);
             }
         };
         timer.start();
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        String score = String.format("%s / %s", mCountRightAnswer, mCountOfQuestions);
+        String score = String.format("%s / %s", mCountOfRightAnswer, mCountOfQuestions);
         mScoreTextView.setText(score);
     }
 
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             int сhosenAnswer = Integer.parseInt(answer);
             if (сhosenAnswer == mRightAnswer) {
                 // если правильный увеличиваем количество правильных ответов
-                mCountRightAnswer++;
+                mCountOfRightAnswer++;
                 Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
