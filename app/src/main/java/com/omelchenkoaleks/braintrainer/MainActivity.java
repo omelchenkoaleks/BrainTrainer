@@ -1,6 +1,7 @@
 package com.omelchenkoaleks.braintrainer;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,24 @@ public class MainActivity extends AppCompatActivity {
         mOptions.add(mOpinion_3_TextView);
 
         playNext();
+
+        // создаем таймер
+        CountDownTimer timer = new CountDownTimer(6000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                /*
+                    вызываем созданный метод, для преобразования в строку милисекунды
+                    и передаем в качестве параметра оставшееся количество милисекунд (millisUntilFinished)
+                 */
+                mTimerTextView.setText(getTime(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+        timer.start();
     }
 
     // новый вопрос должен генерироваться каждый раз при выборе варианта
@@ -77,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private String getTime(long millis) {
         // получаем секунды и минуты
         int seconds = (int) (millis / 1000);
-        int minutes = seconds % 60;
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
 
         // теперь возвращаем строку в нужном нам формате
         return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
