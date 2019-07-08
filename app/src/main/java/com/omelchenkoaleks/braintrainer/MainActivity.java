@@ -3,6 +3,7 @@ package com.omelchenkoaleks.braintrainer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         playNext();
     }
 
+    // новый вопрос должен генерироваться каждый раз при выборе варианта
     private void playNext() {
         generateQuestion();
 
@@ -109,8 +111,17 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-    // новый вопрос должен генерироваться каждый раз при выборе варианта
     public void onClickAnswer(View view) {
+        // чтобы проверить правильный ответ - нужно получить getText() у TextView
+        TextView textView = (TextView) view;
+        String answer = textView.getText().toString();
+        int сhosenAnswer = Integer.parseInt(answer);
+        if (сhosenAnswer == mRightAnswer) {
+            Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
+        }
+
         playNext();
     }
 }
