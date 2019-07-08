@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private int mCountOfQuestions = 0;
     private int mCountRightAnswer = 0;
 
+    // хранит значение - закончилась ли игра
+    private boolean mGameOver = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                // TODO: мои доработки )))
+                mTimerTextView.setText(String.format(Locale.getDefault(), "%02d:%02d", 00, 00));
+                mGameOver = true;
             }
         };
         timer.start();
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
              до конца игры) в читаемый формат (String) */
     private String getTime(long millis) {
         // получаем секунды и минуты
-        int seconds = (int) (millis / 1000);
+        int seconds = (int) (millis / 1000); // общее количество секунд
         int minutes = seconds / 60;
         seconds = seconds % 60;
 
@@ -150,21 +155,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAnswer(View view) {
-        // чтобы проверить правильный ответ - нужно получить getText() у TextView
-        TextView textView = (TextView) view;
-        String answer = textView.getText().toString();
-        int сhosenAnswer = Integer.parseInt(answer);
-        if (сhosenAnswer == mRightAnswer) {
-            // если правильный увеличиваем количество правильных ответов
-            mCountRightAnswer++;
-            Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
+        if (!mGameOver) {
+            // чтобы проверить правильный ответ - нужно получить getText() у TextView
+            TextView textView = (TextView) view;
+            String answer = textView.getText().toString();
+            int сhosenAnswer = Integer.parseInt(answer);
+            if (сhosenAnswer == mRightAnswer) {
+                // если правильный увеличиваем количество правильных ответов
+                mCountRightAnswer++;
+                Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Неверно", Toast.LENGTH_SHORT).show();
+            }
+
+            // независимо правильный или нет ответ увеличиваем количество общих вопросов
+            mCountOfQuestions++;
+
+            playNext();
         }
-
-        // независимо правильный или нет ответ увеличиваем количество общих вопросов
-        mCountOfQuestions++;
-
-        playNext();
     }
 }
