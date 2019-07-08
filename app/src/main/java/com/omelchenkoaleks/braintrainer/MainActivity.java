@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         playNext();
 
         // создаем таймер
-        CountDownTimer timer = new CountDownTimer(6000, 1000) {
+        CountDownTimer timer = new CountDownTimer(20000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 /*
@@ -72,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
                  */
                 mTimerTextView.setText(getTime(millisUntilFinished));
 
-
+                // меняем цвет = если осталось меньше 10 секунд
+                if (millisUntilFinished < 10000) {
+                    mTimerTextView.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                }
             }
 
             @Override
